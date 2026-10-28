@@ -170,7 +170,7 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 400; text-transform:
 
 /* ---------- guía de embarque: historia fija ---------- */
 .route__grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gutter); align-items: start; }
-.route__intro { grid-column: 1 / span 5; position: sticky; top: 12vh; display: grid; gap: 1.75rem; }
+.route__intro { grid-column: 1 / span 5; display: grid; gap: 1.75rem; }
 .route__intro > p { font-size: var(--step-lead); line-height: 1.3; max-width: 28ch; }
 .calc { display: grid; gap: 0.6rem; max-width: 26rem; }
 .calc label { margin-top: 0.6rem; }
@@ -316,4 +316,191 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 400; text-transform:
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 1ms !important; animation: none !important; }
+}
+
+/* =====================================================================
+   Marca Ixchel: logo, carga, volumen, camión, mapa, compromisos, envío
+   ===================================================================== */
+
+/* ---------- marca en la etiqueta ---------- */
+.card__top { display: flex; align-items: center; justify-content: space-between; gap: 1rem 2rem; flex-wrap: wrap; }
+.card__top .card__nav { flex: 1 1 auto; justify-content: flex-end; gap: 0.5rem 2rem; }
+.brand { display: inline-flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+.brand__logo { width: 3.25rem; height: 3.25rem; flex: none; transition: transform 500ms var(--ease-out); }
+.brand__name { font-family: var(--font-display); font-size: var(--step-lead); line-height: 1; letter-spacing: 0.03em; }
+@media (hover: hover) and (pointer: fine) { .brand:hover .brand__logo { transform: rotate(-6deg) scale(1.06); } }
+@media (max-width: 760px) {
+  .card__top { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+  .card__top .card__nav { justify-content: flex-start; }
+}
+
+/* fruta del fondo que se mece y luna que respira */
+@media (prefers-reduced-motion: no-preference) {
+  .hero__art > use[href="#fruta"] { transform-box: fill-box; transform-origin: 50% 0; animation: sway 6s ease-in-out infinite alternate; }
+  .hero__art > use[href="#fruta"]:nth-of-type(3n) { animation-duration: 7.5s; animation-delay: -2s; }
+  .hero__art > use[href="#fruta"]:nth-of-type(3n+1) { animation-duration: 5.2s; animation-delay: -1s; }
+  .hero__moon { transform-box: fill-box; transform-origin: 50% 50%; animation: moon 9s ease-in-out infinite alternate; }
+}
+@keyframes sway { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
+@keyframes moon { from { transform: translateY(0); } to { transform: translateY(18px); } }
+
+/* ---------- animación de carga: el rambután se abre ---------- */
+.loader { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .js .loader { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; background: var(--bg); color: var(--ink); animation: loader-out 600ms var(--ease-out) 3.4s forwards; }
+  .js .loader.is-done { animation: loader-out 650ms var(--ease-out) forwards; }
+  .js.is-seen .loader { display: none; }
+}
+@keyframes loader-out { to { opacity: 0; transform: translateY(-4%); visibility: hidden; } }
+.loader__stage { display: grid; justify-items: center; gap: 0.25rem; text-align: center; }
+.loader__fruit { width: min(56vw, 15rem); height: auto; overflow: visible; }
+.loader__hairs path { fill: none; stroke: #e0473a; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; animation: hair 520ms var(--ease-out) forwards; animation-delay: calc(var(--d) * 1ms + 250ms); }
+.loader__half { transform-box: fill-box; transform-origin: 100% 50%; animation: fruit-in 520ms var(--ease-out) both, open-l 700ms var(--ease-out) 1350ms forwards; }
+.loader__half--r { transform-origin: 0% 50%; animation: fruit-in 520ms var(--ease-out) both, open-r 700ms var(--ease-out) 1350ms forwards; }
+.loader__pulp { transform-box: fill-box; transform-origin: 50% 50%; transform: scale(0.4); opacity: 0; animation: pulp 600ms var(--ease-out) 1450ms forwards; }
+.loader__hairs { transform-box: fill-box; transform-origin: 50% 50%; animation: hairs-off 500ms ease 1350ms forwards; }
+.loader__rabbit { opacity: 0; animation: rise 500ms var(--ease-out) 1750ms forwards; }
+.loader__name { font-family: var(--font-display); font-size: var(--step-head); line-height: 0.9; opacity: 0; transform: translateY(16px); animation: rise 600ms var(--ease-out) 1700ms forwards; margin-top: 1rem; }
+.loader__tag { font-style: italic; font-size: var(--step-lead); opacity: 0; animation: rise 600ms var(--ease-out) 1850ms forwards; }
+@keyframes hair { to { stroke-dashoffset: 0; } }
+@keyframes fruit-in { from { transform: scale(0.2); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes open-l { to { transform: translateX(-34%) rotate(-28deg); } }
+@keyframes open-r { to { transform: translateX(34%) rotate(28deg); } }
+@keyframes pulp { to { transform: scale(1); opacity: 1; } }
+@keyframes hairs-off { to { opacity: 0; transform: scale(1.25); } }
+@keyframes rise { to { opacity: 1; transform: none; } }
+
+/* ---------- pedidos por volumen: cajas que se apilan ---------- */
+.volume { background: var(--red); color: var(--ink); }
+.volume__head { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gutter); align-items: end; }
+.volume__head .head { grid-column: 1 / span 6; }
+.volume__head p { grid-column: 8 / -1; font-size: var(--step-lead); line-height: 1.3; max-width: 28ch; }
+.volume__tiers { list-style: none; margin: clamp(3rem, 6vw, 5rem) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); align-items: end; }
+.tier { display: grid; gap: 0.5rem; align-content: end; }
+.tier__stack { display: flex; flex-wrap: wrap-reverse; align-content: flex-start; gap: 6px; height: calc(var(--n) * 2.6rem + 1rem); max-width: 22rem; margin-bottom: 1.25rem; }
+.tier__stack i { width: calc(50% - 3px); height: 2.4rem; background: #b5762c; position: relative; }
+.tier__stack i::before { content: ""; position: absolute; inset: 0 0 auto; height: 0.7rem; background: #d9974a; }
+.tier__stack i::after { content: ""; position: absolute; left: 12%; right: 12%; top: 1.25rem; height: 0.35rem; background: #8c5a20; }
+.tier__name { font-size: var(--step-head); line-height: 0.9; }
+.tier__range { font-family: var(--font-display); font-size: var(--step-lead); line-height: 1; }
+.tier p { max-width: 30ch; }
+@media (prefers-reduced-motion: no-preference) {
+  .js .tier__stack i { opacity: 0; transform: translateY(-120px); }
+  .js .is-stacked .tier__stack i { animation: drop 520ms cubic-bezier(0.34, 1.4, 0.64, 1) forwards; animation-delay: calc(var(--k) * 90ms); }
+}
+@keyframes drop { to { opacity: 1; transform: none; } }
+@media (max-width: 900px) {
+  .volume__head .head, .volume__head p { grid-column: 1 / -1; }
+  .volume__tiers { grid-template-columns: 1fr; gap: 3rem; }
+  .tier__stack { height: auto; min-height: 0; max-width: none; gap: 4px; }
+  .tier__stack i { width: calc(25% - 3px); height: 1.75rem; }
+  .tier__stack i::before { height: 0.5rem; }
+  .tier__stack i::after { top: 0.95rem; height: 0.3rem; }
+}
+
+/* ---------- unidades y camión ---------- */
+.units { border: 0; padding: 0; margin: 0 0 0.4rem; display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.units legend { padding: 0; margin-bottom: 0.6rem; }
+.units label { position: relative; flex: 1 1 0; min-width: 6rem; }
+.units input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+.units span { display: flex; align-items: center; justify-content: center; min-height: 3rem; padding: 0 0.75rem; background: var(--surface); transition: background-color var(--t-hover) ease, color var(--t-hover) ease; }
+.units input:checked + span { background: var(--ink); color: var(--bg); font-weight: 600; }
+.units input:focus-visible + span { outline: 3px solid var(--ink); outline-offset: 3px; }
+@media (hover: hover) and (pointer: fine) { .units input:not(:checked):hover + span { background: #23552f; } }
+.truck { margin-top: 1rem; max-width: 30rem; }
+.truck__svg { width: 100%; height: auto; overflow: visible; }
+.truck__cap { margin-top: 0.75rem; }
+.truck__slot { transform-box: fill-box; transform-origin: 50% 100%; transition: transform 380ms cubic-bezier(0.34, 1.4, 0.64, 1), opacity 250ms ease; }
+.truck__slot.is-empty { transform: scaleY(0.15); opacity: 0.25; }
+@media (prefers-reduced-motion: no-preference) {
+  .truck__body { animation: idle 1.4s ease-in-out infinite; transform-box: fill-box; }
+}
+@keyframes idle { 50% { transform: translateY(-1.5px); } }
+
+/* ---------- mapa de la ruta ---------- */
+.map { background: var(--surface); }
+.map__grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gutter); align-items: center; }
+.map__text { grid-column: 1 / span 4; display: grid; gap: 1.5rem; justify-items: start; }
+.map__text > p:not(.map__line) { font-size: var(--step-lead); line-height: 1.3; }
+.map__line { display: grid; gap: 0.25rem; font-family: var(--font-display); font-size: var(--step-lead); line-height: 1.05; }
+.map__line b { font-weight: 400; }
+.map__fig { grid-column: 5 / -1; }
+.map__svg { width: 100%; height: auto; overflow: visible; }
+.map__fig figcaption { margin-top: 0.75rem; text-align: right; }
+.map__land { fill: #23552f; }
+.map__dot { fill: var(--muted); transition: fill 300ms ease, r 300ms ease; }
+.map__dot.is-on { fill: var(--ink); }
+.map__origin { fill: var(--fruit-skin); }
+.map__label { fill: var(--ink); font-family: var(--font-display); font-size: 22px; letter-spacing: 0.02em; }
+.map__route { fill: none; stroke: var(--ink); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+.map__trail { fill: none; stroke: var(--muted); stroke-width: 3; stroke-dasharray: 2 10; stroke-linecap: round; stroke-linejoin: round; }
+.map__pulse { fill: none; stroke: var(--fruit-skin); stroke-width: 3; transform-box: fill-box; transform-origin: 50% 50%; }
+@media (prefers-reduced-motion: no-preference) { .map__pulse { animation: pulse 1.8s ease-out infinite; } }
+@keyframes pulse { from { transform: scale(0.6); opacity: 1; } to { transform: scale(2.4); opacity: 0; } }
+@media (max-width: 900px) {
+  .map__text, .map__fig { grid-column: 1 / -1; }
+  .map__fig figcaption { text-align: left; }
+}
+
+/* ---------- compromisos ---------- */
+.trust { background: #2b6b40; }
+.trust__grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gutter); align-items: center; }
+.trust__seal { grid-column: 1 / span 5; max-width: 30rem; }
+.trust__seal svg { width: 100%; height: auto; }
+.trust__ring { font-family: var(--font-display); font-size: 21px; letter-spacing: 0.06em; fill: var(--bg); }
+@media (prefers-reduced-motion: no-preference) {
+  .trust__seal svg { animation: spin 60s linear infinite; }
+  .trust__seal use { transform-box: fill-box; transform-origin: 50% 50%; animation: spin 60s linear infinite reverse; }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.trust__text { grid-column: 7 / -1; display: grid; gap: 2rem; }
+.trust__text .head { max-width: 12ch; }
+.trust__list { display: grid; gap: 1.1rem; }
+.trust__list li { padding-left: 2.25rem; position: relative; max-width: 46ch; }
+.trust__list li::before, .trust__list li::after { content: ""; position: absolute; border-radius: 50%; }
+.trust__list li::before { left: 0; top: 0.3em; width: 1.2rem; height: 1.2rem; background: var(--ink); }
+.trust__list li::after { left: 0.3rem; top: calc(0.3em + 0.3rem); width: 0.6rem; height: 0.6rem; background: var(--fruit-skin); }
+.trust__list b { font-weight: 600; }
+@media (max-width: 900px) {
+  .trust__seal { grid-column: 1 / -1; width: min(70%, 20rem); justify-self: center; }
+  .trust__text { grid-column: 1 / -1; }
+}
+
+/* ---------- envío del cupón ---------- */
+.send { position: absolute; inset: 0; z-index: 2; background: var(--red); display: grid; align-content: center; justify-items: center; gap: 0.75rem; padding: clamp(1.5rem, 4vw, 3rem); text-align: center; }
+.send[hidden] { display: none; }
+.send__scene { width: min(100%, 34rem); height: auto; overflow: hidden; }
+.send__title { font-family: var(--font-display); font-size: var(--step-head); line-height: 0.9; max-width: 14ch; }
+.send p { max-width: 40ch; }
+.send__actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1rem 1.5rem; margin-top: 0.5rem; }
+@media (prefers-reduced-motion: no-preference) {
+  .send:not([hidden]) .send__box { animation: box-in 600ms cubic-bezier(0.34, 1.3, 0.64, 1) 100ms both; }
+  .send:not([hidden]) .send__truck { animation: drive 1600ms var(--ease-in-out, cubic-bezier(0.76, 0, 0.24, 1)) 800ms both; }
+  .send:not([hidden]) .send__box { transform-box: view-box; }
+  .send:not([hidden]) .send__road { animation: road 600ms linear infinite; }
+}
+@keyframes box-in { from { transform: translateY(-40px); opacity: 0; } to { transform: translateY(120px); opacity: 1; } }
+@keyframes drive { 0% { transform: translateX(0); } 30% { transform: translateX(-12px); } 100% { transform: translateX(110%); } }
+@keyframes road { to { stroke-dashoffset: -42; } }
+.coupon.is-sent .send__box { opacity: 0; }
+
+/* ---------- más frutas ---------- */
+.more { background: var(--paper); color: var(--paper-ink); }
+.more__grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gutter); align-items: center; }
+.more__grid .head { grid-column: 1 / span 5; }
+.more__list { grid-column: 6 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); }
+.more__list li { display: grid; justify-items: center; gap: 0.75rem; font-family: var(--font-display); font-size: var(--step-lead); }
+.more__list svg { width: 100%; max-width: 12rem; aspect-ratio: 1; height: auto; transition: transform 500ms var(--ease-out); }
+@media (hover: hover) and (pointer: fine) { .more__list li:hover svg { transform: rotate(-8deg) translateY(-6px); } }
+.more__note { grid-column: 6 / -1; font-size: var(--step-lead); line-height: 1.3; max-width: 34ch; }
+@media (max-width: 900px) {
+  .more__grid .head, .more__list, .more__note { grid-column: 1 / -1; }
+}
+
+/* ---------- pie con logo ---------- */
+.foot__top { display: grid; grid-template-columns: auto 1fr; gap: clamp(1rem, 3vw, 2.5rem); align-items: end; }
+.foot__logo { width: calc(var(--step-display) * 1.12); height: calc(var(--step-display) * 1.12); }
+@media (max-width: 760px) {
+  .foot__top { grid-template-columns: 1fr; }
+  .foot__logo { width: 7rem; height: 7rem; }
 }
