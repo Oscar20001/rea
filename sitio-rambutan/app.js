@@ -39,8 +39,15 @@ function waLink(text) {
   return `${base}?text=${encodeURIComponent(text)}`;
 }
 
+// Un enlace real abre WhatsApp en otra pestaña (o la app en el celular) sin que lo bloqueen.
 function openWhatsApp(text) {
-  window.open(waLink(text), '_blank', 'noopener');
+  const a = document.createElement('a');
+  a.href = waLink(text);
+  a.target = '_blank';
+  a.rel = 'noopener';
+  document.body.append(a);
+  a.click();
+  a.remove();
 }
 
 // ---------- guía de embarque ----------
@@ -124,12 +131,14 @@ const MENSAJES = {
 };
 
 $$('[data-wa]').forEach((a) => {
-  a.addEventListener('click', (e) => {
+  a.addEventListener('click', () => {
     const m = MENSAJES[a.dataset.wa];
     const text = typeof m === 'function' ? m() : m;
     if (!text) return; // sin mensaje, el enlace baja al cupón
-    e.preventDefault();
-    openWhatsApp(text);
+    // el enlace se vuelve el de WhatsApp justo al tocarlo, con el mensaje del momento
+    a.href = waLink(text);
+    a.target = '_blank';
+    a.rel = 'noopener';
   });
 });
 
